@@ -58,4 +58,29 @@ postgres=# \d orders
  price  | integer |           |          |
 Indexes:
     "orders_pkey" PRIMARY KEY, btree (id)
+
+
+postgres=# CREATE TABLE clients (id SERIAL PRIMARY KEY, family TEXT, country TEXT, order_name TEXT);
+postgres=# CREATE INDEX country_idx ON clients(country);
+CREATE INDEX
+
+```
+
+Задание 3 
+```
+postgres=# SELECT * FROM orders;
+ id |  name   | price
+----+---------+-------
+  2 | Принтер |  3000
+  3 | Книга   |   500
+  4 | Монитор |  7000
+  5 | Гитара  |  4000
+  1 | Шоколад |    10
+(5 rows)
+
+postgres=# SELECT count(*) FROM orders;
+ count
+-------
+     5
+(1 row)
 ```
