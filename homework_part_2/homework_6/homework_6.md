@@ -60,13 +60,35 @@ Indexes:
     "orders_pkey" PRIMARY KEY, btree (id)
 
 
-postgres=# CREATE TABLE clients (id SERIAL PRIMARY KEY, family TEXT, country TEXT, order_name TEXT);
-postgres=# CREATE INDEX country_idx ON clients(country);
-CREATE INDEX
+postgres=# CREATE TABLE clients (Id SERIAL PRIMARY KEY, surname CHARACTER VARYING(30), country CHARACTER VARYING(30), order_id INT REFERENCES orders (id) );
+postgres=# CREATE INDEX country_adr ON clients (country);
+postgres=# \d clients
+                                    Table "public.clients"
+  Column  |         Type          | Collation | Nullable |               Default               
+----------+-----------------------+-----------+----------+-------------------------------------
+ id       | integer               |           | not null | nextval('clients_id_seq'::regclass)
+ surname  | character varying(30) |           |          | 
+ country  | character varying(30) |           |          | 
+ order_id | integer               |           |          | 
+Indexes:
+    "clients_pkey" PRIMARY KEY, btree (id)
+    "country_adr" btree (country)
+Foreign-key constraints:
+    "clients_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
 
+postgres=# GRANT ALL ON clients TO test_admin_user;
+GRANT
+postgres=# GRANT ALL ON orders TO test_admin_user;
+GRANT
+postgres=# create user test_simple_user;
+CREATE ROLE
+postgres=# GRANT SELECT, INSERT, UPDATE, DELETE ON clients TO test_simple_user;
+GRANT
+postgres=# GRANT SELECT, INSERT, UPDATE, DELETE ON orders TO test_simple_user;
+GRANT
 ```
 
-Задание 3 
+## Задание 3 
 ```
 postgres=# SELECT * FROM orders;
  id |  name   | price
@@ -83,4 +105,28 @@ postgres=# SELECT count(*) FROM orders;
 -------
      5
 (1 row)
+
+
+postgres=# SELECT * FROM clients
+;
+ id |       surname        | country | order_id
+----+----------------------+---------+----------
+  1 | Иванов Иван Иванович | USA     |
+  2 | Петров Петр Петрович | Canada  |
+  3 | Иоганн Себастьян Бах | Japan   |
+  4 | Ронни Джеймс Дио     | Russia  |
+  5 | Ritchie Blackmore    | Russia  |
+(5 rows)
+
+postgres=# SELECT count(*) FROM clients;
+ count
+-------
+     5
+(1 row)
+
+```
+
+## Задание 4
+```
+
 ```
