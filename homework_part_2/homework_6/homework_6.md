@@ -128,5 +128,20 @@ postgres=# SELECT count(*) FROM clients;
 
 ## Задание 4
 ```
+postgres=# UPDATE clients SET order_id = 3 WHERE id = 1;
+UPDATE 1
+postgres=# UPDATE clients SET order_id = 4 WHERE id = 2;
+UPDATE 1
+postgres=# UPDATE clients SET order_id = 5 WHERE id = 3;
+UPDATE 1
 
+postgres=# SELECT * FROM clients;
+ id |       surname        | country | order_id
+----+----------------------+---------+----------
+  4 | Ронни Джеймс Дио     | Russia  |
+  5 | Ritchie Blackmore    | Russia  |
+  1 | Иванов Иван Иванович | USA     |        3
+  2 | Петров Петр Петрович | Canada  |        4
+  3 | Иоганн Себастьян Бах | Japan   |        5
+(5 rows)
 ```
