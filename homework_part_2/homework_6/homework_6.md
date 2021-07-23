@@ -145,3 +145,14 @@ postgres=# SELECT * FROM clients;
   3 | Иоганн Себастьян Бах | Japan   |        5
 (5 rows)
 ```
+
+## Задание 5
+
+```
+postgres=# EXPLAIN SELECT * FROM clients;
+                         QUERY PLAN
+------------------------------------------------------------
+ Seq Scan on clients  (cost=0.00..14.20 rows=420 width=164)
+(1 row)
+```
+
