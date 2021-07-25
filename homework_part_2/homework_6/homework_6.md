@@ -163,23 +163,24 @@ postgres=# SELECT surname, name FROM clients INNER JOIN orders ON orders.id = or
  Иоганн Себастьян Бах | Гитара
 (3 rows)
 
-
-postgres=# SELECT surname FROM clients WHERE order_id IN (SELECT id FROM orders);
-       surname
-----------------------
- Иванов Иван Иванович
- Петров Петр Петрович
- Иоганн Себастьян Бах
-(3 rows)
 ```
 
 ## Задание 5
 
 ```
-postgres=# EXPLAIN SELECT * FROM clients;
-                         QUERY PLAN
-------------------------------------------------------------
- Seq Scan on clients  (cost=0.00..14.20 rows=420 width=164)
-(1 row)
+postgres=# EXPLAIN SELECT surname, name FROM clients INNER JOIN orders ON orders.id = order_id;
+                              QUERY PLAN
+-----------------------------------------------------------------------
+ Hash Join  (cost=37.00..52.30 rows=420 width=110)
+   Hash Cond: (clients.order_id = orders.id)
+   ->  Seq Scan on clients  (cost=0.00..14.20 rows=420 width=82)
+   ->  Hash  (cost=22.00..22.00 rows=1200 width=36)
+         ->  Seq Scan on orders  (cost=0.00..22.00 rows=1200 width=36)
+(5 rows)
+
+Чтение данных из таблицы может выполняться несколькими способами. В нашем случае EXPLAIN сообщает, что используется Seq Scan — последовательное, блок за блоком, чтение данных таблицы clients.
+cost - это не время, а некое сферическое в вакууме понятие, призванное оценить затратность операции. Первое значение 37.00 — затраты на получение первой строки. Второе — 52.30 — затраты на получение всех строк.
+rows — приблизительное количество возвращаемых строк при выполнении операции Seq Scan. Это значение возвращает планировщик.
+width — средний размер одной строки в байтах.
 ```
 
