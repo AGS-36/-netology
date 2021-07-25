@@ -90,6 +90,16 @@ GRANT
 
 ## Задание 3 
 ```
+postgres=# \d
+               List of relations
+ Schema |      Name      |   Type   |  Owner
+--------+----------------+----------+----------
+ public | clients        | table    | postgres
+ public | clients_id_seq | sequence | postgres
+ public | orders         | table    | postgres
+ public | orders_id_seq  | sequence | postgres
+(4 rows)
+
 postgres=# SELECT * FROM orders;
  id |  name   | price
 ----+---------+-------
@@ -144,6 +154,23 @@ postgres=# SELECT * FROM clients;
   2 | Петров Петр Петрович | Canada  |        4
   3 | Иоганн Себастьян Бах | Japan   |        5
 (5 rows)
+
+postgres=# SELECT surname, name FROM clients INNER JOIN orders ON orders.id = order_id;
+       surname        |  name
+----------------------+---------
+ Иванов Иван Иванович | Книга
+ Петров Петр Петрович | Монитор
+ Иоганн Себастьян Бах | Гитара
+(3 rows)
+
+
+postgres=# SELECT surname FROM clients WHERE order_id IN (SELECT id FROM orders);
+       surname
+----------------------
+ Иванов Иван Иванович
+ Петров Петр Петрович
+ Иоганн Себастьян Бах
+(3 rows)
 ```
 
 ## Задание 5
