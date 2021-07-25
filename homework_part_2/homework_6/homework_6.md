@@ -116,8 +116,14 @@ postgres=# SELECT count(*) FROM orders;
      5
 (1 row)
 
+Таким образом заполнял таблицу:
+postgres=# INSERT INTO clients VALUES (1, 'Иванов Иван Иванович', 'USA');
+...
+postgres=# INSERT INTO clients VALUES (5, 'Ritchie Blackmore', 'Russia');
+
 
 postgres=# SELECT * FROM clients
+
 ;
  id |       surname        | country | order_id
 ----+----------------------+---------+----------
@@ -184,3 +190,60 @@ rows — приблизительное количество возвращае�
 width — средний размер одной строки в байтах.
 ```
 
+## Задание 6
+```
+
+root@a9cff75e39a2:/# pg_dump -U postgres test_db > /pg_dump/test_db.pgsql.backup
+root@a9cff75e39a2:/# ls /pg_dump/
+test_db.pgsql.backup
+
+~ ► docker ps 
+CONTAINER ID   IMAGE                COMMAND                  CREATED      STATUS      PORTS                                       NAMES
+a9cff75e39a2   postgres:12-buster   "docker-entrypoint.s…"   7 days ago   Up 7 days   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   postgress
+~ ► docker stop postgress 
+postgress
+~ ► docker rm postgress 
+postgress
+
+homework_6 ► docker-compose up
+Creating postgress ... done
+Attaching to postgress
+postgress |
+postgress | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgress |
+postgress | 2021-07-25 21:24:25.839 UTC [1] LOG:  starting PostgreSQL 12.7 (Debian 12.7-1.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit
+
+~ ► docker ps -a
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+fd1cde9d510b   postgres:12-buster   "docker-entrypoint.s…"   36 seconds ago   Up 34 seconds   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   postgress
+~ ► docker exec -ti postgress bash
+root@fd1cde9d510b:/# 
+
+root@fd1cde9d510b:/pg_dump# psql -U postgres test_db < /pg_dump/test_db.pgsql.backup
+SET
+SET
+SET
+SET
+SET
+ set_config
+------------
+
+(1 row)
+
+SET
+SET
+SET
+SET
+root@fd1cde9d510b:/pg_dump#
+root@fd1cde9d510b:/pg_dump# psql -U postgres -l
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+(4 rows)
+```
