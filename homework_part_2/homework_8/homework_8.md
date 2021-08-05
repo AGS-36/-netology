@@ -105,7 +105,7 @@ test_db=# select * from orders_2;
 CREATE RULE insert_to_orders_1 AS ON INSERT TO orders WHERE (price > 499) DO INSTEAD INSERT orders_1 VALUES (NEW.*)
 ```
 
-## Задание 5
+## Задание 4
 
 ```
 root@c10f3ab14c87:/pg_dump# pg_dump -U postgres test_db > /pg_dump/test_db.pgsql.backup
