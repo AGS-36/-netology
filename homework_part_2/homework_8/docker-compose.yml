@@ -1,0 +1,15 @@
+version: "3.9"  
+services:
+  db:
+    image: postgres:latest
+    container_name: postgress
+    ports:
+        - 5432:5432
+    volumes:
+        - /home/rod/pg_data:/var/lib/postgresql/data
+        - /home/rod/pg_dump:/pg_dump
+    environment:
+        POSTGRES_PASSWORD: 123
+        POSTGRES_DB: test_db
+        PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
