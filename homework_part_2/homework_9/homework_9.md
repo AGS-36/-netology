@@ -172,8 +172,50 @@ yellow open   ind-2            jlB9DYqjTuScO1ATmgMI3Q   2   1          0        
 ## Задание 3
 
 ```
-curl -XPOST localhost:9200/_snapshot/netology_backup?pretty -H 'Content-Type: application/json' -d'{"type": "fs", "settings": { "location":"/elasticsearch-7.14.0/snapshots" }}'
+~ ► curl -XPOST localhost:9200/_snapshot/netology_backup?pretty -H 'Content-Type: application/json' -d'{"type": "fs", "settings": { "location":"/elasticsearch-7.14.0/snapshots" }}'
+{
+  "acknowledged" : true
+}
 
-[root@bcab6605fb84 ~]# curl -X PUT localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+~ ► curl -GET localhost:9200/_snapshot/netology_backup?pretty {
+  "netology_backup" : {
+    "type" : "fs",
+    "settings" : {
+      "location" : "/elasticsearch-7.14.0/snapshots"
+    }
+  }
+}
+
+~ ► curl -X PUT localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
 {"acknowledged":true,"shards_acknowledged":true,"index":"test"}
+
+~ ► curl -X PUT localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true
+{"snapshot":{"snapshot":"elasticsearch","uuid":"kVaPJB_6QxmOZFCYk-vxLg","repository":"netology_backup","version_id":7140099,"version":"7.14.0","indices":[".geoip_databases","test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2021-08-19T14:34:38.394Z","start_time_in_millis":1629383678394,"end_time":"2021-08-19T14:34:38.995Z","end_time_in_millis":1629383678995,"duration_in_millis":601,"failures":[],"shards":{"total":2,"failed":0,"successful":2},"feature_states":[{"feature_name":"geoip","indices":[".geoip_databases"]}]}}
+
+homework_9 ► docker ps
+CONTAINER ID   IMAGE                      COMMAND                  CREATED          STATUS          PORTS                                                 NAMES
+7d2b94083dc8   stema91/centos7:elastick   "/elasticsearch-7.14…"   19 minutes ago   Up 19 minutes   0.0.0.0:9200->9200/tcp, :::9200->9200/tcp, 9300/tcp   elastic
+homework_9 ►
+homework_9 ► docker exec -ti elastic bash
+[elasticsearch@elastic /]$ cd elasticsearch-7.14.0/snapshots/
+[elasticsearch@elastic snapshots]$ ls
+index-0  index.latest  indices  meta-kVaPJB_6QxmOZFCYk-vxLg.dat  snap-kVaPJB_6QxmOZFCYk-vxLg.dat
+[elasticsearch@elastic snapshots]$
+
+~ ► curl -X DELETE 'http://localhost:9200/test?pretty'
+{
+  "acknowledged" : true
+}
+
+~ ► curl -X PUT localhost:9200/test-2?pretty -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "test-2"
+}
+
+~ ► curl -X GET http://localhost:9200/_cat/indices?v
+health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases hs0dWFnVTlqdlIjwv4cmRA   1   0         22            0     21.7mb         21.7mb
+green  open   test-2           vOMLtTWuQ76Tgc8xt3RamQ   1   0          0            0       208b           208b
 ```
