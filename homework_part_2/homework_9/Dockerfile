@@ -1,8 +1,8 @@
 FROM centos:7
 
-RUN yum -y install perl-Digest-SHA wget java-11-openjdk
-RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.0-linux-x86_64.tar.gz
-RUN wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.0-darwin-x86_64.tar.gz.sha512
+RUN yum install perl-Digest-SHA wget java-11-openjdk -y
+RUN  wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.0-linux-x86_64.tar.gz \
+    &&  wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.0-linux-x86_64.tar.gz.sha512
 RUN shasum -a 512 -c elasticsearch-7.14.0-linux-x86_64.tar.gz.sha512  \
     && tar -xzf elasticsearch-7.14.0-linux-x86_64.tar.gz 
 RUN yum upgrade -y

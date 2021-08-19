@@ -30,13 +30,13 @@ CMD ["/elasticsearch-7.14.0/bin/elasticsearch"]
 ```
 [root@bcab6605fb84 config]# curl -X GET 'http://localhost:9200'
 {
-  "name" : "elastick",
+  "name" : "elastic",
   "cluster_name" : "netology_test",
-  "cluster_uuid" : "nD2t0hbOS1GKVNYbb4iXCA",
+  "cluster_uuid" : "s2l4GBv8TbW1L7gEkLokFw",
   "version" : {
     "number" : "7.14.0",
     "build_flavor" : "default",
-    "build_type" : "docker",
+    "build_type" : "tar",
     "build_hash" : "dd5a0a2acaa2045ff9624f3729fc8a6f40835aa1",
     "build_date" : "2021-07-29T20:49:32.864135063Z",
     "build_snapshot" : false,
@@ -46,30 +46,36 @@ CMD ["/elasticsearch-7.14.0/bin/elasticsearch"]
   },
   "tagline" : "You Know, for Search"
 }
-
 ```
 
+Ссылка на образ
+https://hub.docker.com/repository/docker/stema91/netology
 
 
 ## Задание 2.
 ```
 
-[root@bcab6605fb84 config]# curl -X PUT localhost:9200/ind-1 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
-{"error":{"root_cause":[{"type":"resource_already_exists_exception","reason":"index [ind-1/cQuhNzeqRruFBr6RMEmCyQ] already exists","index_uuid":"cQuhNzeqRruFBr6RMEmCyQ","index":"ind-1"}],"type":"resource_already_exists_exception","reason":"index [ind-1/cQuhNzeqRruFBr6RMEmCyQ] already exists","index_uuid":"cQuhNzeqRruFBr6RMEmCyQ","index":"ind-1"},"status":400}[root@bcab6605fb84 config]# curl -X PUT localhost:9200/ind-2 -H 'Content-Type: application/json' -d'{ "settings": {mber_of_shards": 2,  "number_of_replicas": 1 }}'
-{"acknowledged":true,"shards_acknowledged":true,"index":"ind-2"}[root@bcab6605fb84 config]# curl -X PUT localhost:9200/mber_of_shards": 4,  "number_of_replicas": 2 }}'    ings": { "num
-{"acknowledged":true,"shards_acknowledged":true,"index":"ind-3"}[root@bcab6605fb84 config]#
+~ ► curl -X PUT localhost:9200/ind-1 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"ind-1"}
 
-[root@bcab6605fb84 config]# curl -X GET 'http://localhost:9200/_cat/indices?v'
+~ ► curl -X PUT localhost:9200/ind-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 2,  "number_of_replicas": 1 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"ind-2"}
+
+~ ► curl -X PUT localhost:9200/ind-3 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 4,  "number_of_replicas": 2 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"ind-3"}
+
+~ ► curl -X GET 'http://localhost:9200/_cat/indices?v' 
 health status index            uuid                   pri rep docs.count docs.deleted store.size pri.store.size
-green  open   .geoip_databases zrWNIZslTOCS3T1bPLLjJw   1   0         42            0     40.6mb         40.6mb
-yellow open   ind-1            cQuhNzeqRruFBr6RMEmCyQ   1   1          0            0       208b           208b
-yellow open   ind-3            tmsp7WYGS_uaLwpqa9TdqA   4   2          0            0       832b           832b
-yellow open   ind-2
+green  open   .geoip_databases hs0dWFnVTlqdlIjwv4cmRA   1   0         22            0     21.7mb         21.7mb
+green  open   ind-1            RHsuCuWVSnOym54ZYL6D7g   1   0          0            0       208b           208b
+yellow open   ind-3            HHqWIX6FRsK8zjKZx8MIBw   4   2          0            0       832b           832b
+yellow open   ind-2            jlB9DYqjTuScO1ATmgMI3Q   2   1          0            0       416b           416b
 
-[root@bcab6605fb84 config]# curl -X GET 'http://localhost:9200/_cluster/health/ind-1?pretty'
+
+~ ► curl -X GET 'http://localhost:9200/_cluster/health/ind-1?pretty'
 {
   "cluster_name" : "netology_test",
-  "status" : "yellow",
+  "status" : "green",
   "timed_out" : false,
   "number_of_nodes" : 1,
   "number_of_data_nodes" : 1,
@@ -77,15 +83,15 @@ yellow open   ind-2
   "active_shards" : 1,
   "relocating_shards" : 0,
   "initializing_shards" : 0,
-  "unassigned_shards" : 1,
+  "unassigned_shards" : 0,
   "delayed_unassigned_shards" : 0,
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 42.10526315789473
+  "active_shards_percent_as_number" : 100.0
+}
 
-
-  [root@bcab6605fb84 config]# curl -X GET 'http://localhost:9200/_cluster/health/ind-2?pretty'
+~ ► curl -X GET 'http://localhost:9200/_cluster/health/ind-2?pretty'
 {
   "cluster_name" : "netology_test",
   "status" : "yellow",
@@ -101,10 +107,11 @@ yellow open   ind-2
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 42.10526315789473
+  "active_shards_percent_as_number" : 44.44444444444444
+}
 
 
-  [root@bcab6605fb84 config]# curl -X GET 'http://localhost:9200/_cluster/health/ind-3?pretty'
+~ ► curl -X GET 'http://localhost:9200/_cluster/health/ind-3?pretty' 
 {
   "cluster_name" : "netology_test",
   "status" : "yellow",
@@ -120,9 +127,11 @@ yellow open   ind-2
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 42.10526315789473
-  
-  [root@bcab6605fb84 config]# curl -XGET localhost:9200/_cluster/health/?pretty=true
+  "active_shards_percent_as_number" : 44.44444444444444
+}
+
+
+~ ► curl -XGET localhost:9200/_cluster/health/?pretty=true
 {
   "cluster_name" : "netology_test",
   "status" : "yellow",
@@ -133,29 +142,32 @@ yellow open   ind-2
   "active_shards" : 8,
   "relocating_shards" : 0,
   "initializing_shards" : 0,
-  "unassigned_shards" : 11,
+  "unassigned_shards" : 10,
   "delayed_unassigned_shards" : 0,
   "number_of_pending_tasks" : 0,
   "number_of_in_flight_fetch" : 0,
   "task_max_waiting_in_queue_millis" : 0,
-  "active_shards_percent_as_number" : 42.10526315789473
+  "active_shards_percent_as_number" : 44.44444444444444
+}
 
-[root@bcab6605fb84 config]# curl -X DELETE 'http://localhost:9200/ind-1?pretty'
+
+~ ► curl -X DELETE 'http://localhost:9200/ind-1?pretty'
 {
   "acknowledged" : true
 }
-
-[root@bcab6605fb84 config]# curl -X DELETE 'http://localhost:9200/ind-2?pretty'
+~ ► curl -X DELETE 'http://localhost:9200/ind-2?pretty'
 {
   "acknowledged" : true
 }
-
-[root@bcab6605fb84 config]# curl -X DELETE 'http://localhost:9200/ind-3?pretty'
+~ ► curl -X DELETE 'http://localhost:9200/ind-3?pretty'
 {
   "acknowledged" : true
 }
 
 ```
+
+Для индексов 2 и 3 у нас нет серверов куда можно синхронизировать данные, поэтому они имеют статус yellow 
+
 
 ## Задание 3
 
