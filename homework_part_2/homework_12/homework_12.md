@@ -1,5 +1,5 @@
 файл main.tf
-
+https://github.com/AGS-36/devops-netology/blob/master/homework_part_2/homework_12/main.tf
 ```
 provider "aws" {
   region = "us-west-2"
@@ -32,7 +32,8 @@ resource "aws_instance" "ubuntu" {
   }
 }
 ```
-файл outputs.tf
+файл versions.tf
+https://github.com/AGS-36/devops-netology/blob/master/homework_part_2/homework_12/versions.tf
 ```
 terraform {
   required_providers {
@@ -44,6 +45,7 @@ terraform {
 }
 ```
 файл outputs.tf
+https://github.com/AGS-36/devops-netology/blob/master/homework_part_2/homework_12/outputs.tf
 
 ```
 output "region_name" {
