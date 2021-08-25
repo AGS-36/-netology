@@ -246,4 +246,12 @@ root@fd1cde9d510b:/pg_dump# psql -U postgres -l
            |          |          |            |            | postgres=CTc/postgres
  test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
 (4 rows)
+
+mysql> SELECT * FROM orders WHERE price > 300;
++----+----------------+-------+
+| id | title          | price |
++----+----------------+-------+
+|  2 | My little pony |   500 |
++----+----------------+-------+
+1 row in set (0.00 sec)
 ```
