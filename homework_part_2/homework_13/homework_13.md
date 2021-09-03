@@ -20,7 +20,8 @@ homework_13 ► terraform workspace list
 ```
 
 ```
-$ terraform plan
+homework_13 ► terraform plan
+  default
 
 Terraform used the selected providers to generate the following execution plan. Resource
 actions are indicated with the following symbols:
