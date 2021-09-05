@@ -454,6 +454,18 @@ localhost                  : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu
 ```
 5. Напишите скрипт на bash: автоматизируйте поднятие необходимых контейнеров, запуск ansible-playbook и остановку контейнеров.
+```
+!#/bin/bash
+
+docker run --name ubuntu  -d pycontribs/ubuntu:latest sleep 999999999
+docker run --name centos7 -d pycontribs/centos:7 sleep 999999999
+docker run --name fedora -d pycontribs/fedora sleep 999999999
+cd playbook
+ansible-playbook -i inventory/prod.yml site.yml --ask-vault-pass
+docker stop ubuntu centos7 fedora
+docker rm ubuntu centos7 fedora
+```
+https://github.com/AGS-36/devops-netology/blob/master/homework_part_3/08-ansible-01-base/script.sh
 6. Все изменения должны быть зафиксированы и отправлены в вашей личный репозиторий.
 
 ---
