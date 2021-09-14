@@ -104,7 +104,7 @@
         mode: 0755
     - name: Replace default kibana.yml
       template:
-        src: kibana.yml
-        dest: /opt/kibana/7.14.1/config
+        src: kibana.yml.j2
+        dest: /opt/kibana/7.14.1/config/kibana.yml
         mode: 0755
 
